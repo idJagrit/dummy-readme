@@ -70,7 +70,7 @@ The website is live and accessible at [bookchain-lemon.vercel.app](https://bookc
       <p>You can see in the given image as well.</p>
     </td>
     <td style="width: 50%; text-align: center;">
-      <img src="wallet1.jpg" alt="MetaMask Connect Example" style="max-width: 100%; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1);"/>
+      <img src="Wallet1.jpg" alt="MetaMask Connect Example" style="max-width: 100%; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1);"/>
     </td>
   </tr>
 </table>
@@ -96,6 +96,14 @@ The website is live and accessible at [bookchain-lemon.vercel.app](https://bookc
 #### 🎉 YOU ARE READY TO USE THE PLATFORM NOW!! 🚀🎯
 
  ---
+## Home Page 
+![image](Homepage.jpg)
+## Marketplace
+![image](Marketplace.jpg)
+<br>
+Displays books rented by the user in the "MY Books" Section:-
+<br>
+![image](Mybook.jpg)
 
 ## Contract Explanation
 
@@ -165,36 +173,72 @@ The smart contract enables a trustless book/item rental system where:
   </tr>
 </table>
 
-#### 2. `rentItem`
-- **Purpose**: Renters borrow items by paying the deposit.  
-- **Parameters**:  
-  - `itemId`: ID of the item to rent.  
-  - `rentalDays`: Number of days the renter intends to use the item.  
-- **Logic**:  
-  - Validates payment:  
-    ```
-    require(msg.value == item.deposit, "Incorrect deposit");
-    ```
-  - Locks the item (`isAvailable = false`).  
-  - Records rental start time and renter address.  
-  - Emits an `ItemRented` event.  
+<table>
+  <tr>
+    <td style="width: 50%; vertical-align: top; padding-right: 20px;">
+      <h4>2. <code>rentItem</code></h4>
+      <ul>
+        <li><strong>Purpose</strong>:<br>Renters borrow items by paying the deposit.</li>
+        <li><strong>Parameters</strong>:
+          <ul>
+            <li><code>item</code>: Name of the item to rent.</li>
+            <li><code>rentalDays</code>: Number of days the renter intends to use the item.</li>
+          </ul>
+        </li>
+        <li><strong>Logic</strong>:
+          <ul>
+            <li>Sends a pop-up on UI to ask the user how many days they want to rent the item. (See images →)</li>
+            <li>Validates payment:
+              <pre><code>require(msg.value == item.deposit, "Incorrect deposit");</code></pre>
+            </li>
+            <li>Locks the item (<code>isAvailable = false</code>).</li>
+            <li>Records rental start time and renter address.</li>
+            <li>Emits an <code>ItemRented</code> event.</li>
+          </ul>
+        </li>
+      </ul>
+    </td>
+    <td style="width: 50%; text-align: center;">
+      <img src="Rentitem.jpg" alt="Step 1 UI" style="max-width: 100%; margin-bottom: 15px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1);"/>
+      <img src="Rentitem2.png" alt="Step 2 UI" style="max-width: 100%; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1);"/>
+    </td>
+  </tr>
+</table>
 
-#### 3. `returnItem`
-- **Purpose**: Renters return items to claim a refund.  
-- **Parameters**:  
-  - `itemId`: ID of the item being returned.  
-- **Logic**:  
-  - Calculates rental duration:  
-    ```
-    uint256 daysRented = (block.timestamp - rentalStartTime) / 86400;
-    ```
-  - Computes refund:  
-    ```
-    uint256 refund = item.deposit - (daysRented * item.dailyPrice);
-    ```
-  - Deducts penalties for late returns up to `max_penalty_days`.  
-  - Transfers refund to renter and remaining funds to owner.  
-  - Emits an `ItemReturned` event.  
+<table>
+  <tr>
+    <td style="width: 50%; vertical-align: top; padding-right: 20px;">
+      <h4>3. <code>returnItem</code></h4>
+      <ul>
+        <li><strong>Purpose</strong>:<br>Renters return items to claim a refund.</li>
+        <li><strong>Parameters</strong>:
+          <ul>
+            <li><code>item</code>: ID of the item being returned.</li>
+          </ul>
+        </li>
+        <li><strong>Logic</strong>:
+          <ul>
+            <li>Calculates rental duration:
+              <pre><code>uint256 daysRented = (block.timestamp - rentalStartTime) / 86400;</code></pre>
+            </li>
+            <li>Computes refund:
+              <pre><code>uint256 refund = item.deposit - (daysRented * item.dailyPrice);</code></pre>
+            </li>
+            <li>Previews days remaining to the user who has rented the item.</li>
+            <li>Owner cannot rent their own item; they are shown <code>your_book</code> on the UI.</li>
+            <li>Deducts penalties for late returns up to <code>max_penalty_days</code>.</li>
+            <li>Transfers refund to renter and remaining funds to owner.</li>
+            <li>Emits an <code>ItemReturned</code> event.</li>
+          </ul>
+        </li>
+      </ul>
+    </td>
+    <td style="width: 50%; text-align: center;">
+      <img src="Returnitem.jpg" alt="Step 1 UI" style="max-width: 100%; margin-bottom: 15px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1);"/>
+      <img src="Rentitem-mybook.jpg" alt="Step 2 UI" style="max-width: 100%; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1);"/>
+    </td>
+  </tr>
+</table>
 
 ---
 
@@ -206,39 +250,59 @@ The deposit is calculated as:
 | **Early return**  | Unused penalty fees are refunded.           |
 | **Late return**   | Penalties deducted daily up to `max_penalty_days`. |
 
+If `max_penalty_days` are exceeded, then book is autoreturned. There is a backend server running which uses the smart contract `gentRental` status function and checks if the item has been issued for more than the `max_penalty_days` + `rented_days`
 **Example**:  
 - `daily_price = 0.1 ETH`, `max_penalty_days = 5`, `max_penalty_fees = 0.01 ETH`  
 - Rent for **3 days**:  
   - **Deposit** = `(3 × 0.1) + (5 × 0.01) = 0.35 ETH`  
   - **Returned on day 3**: Refund = `0.35 - (3 × 0.1) = 0.05 ETH`  
-  - **Returned on day 8**: Refund = `0.35 - (8 × 0.1) = -0.45 ETH` (full deposit forfeited).  
+  - **Returned on day 8**: Refund = `0.35 - (3 × 0.1)-(5 × 0.01) = 0.0 ETH` (full deposit exhausted and item autoreturned).  
 
 ---
 
 ### Events
-- **`ItemListed`**  
-- **`ItemRented`**  
-- **`ItemReturned`**  
+- **`BookListed`**  
+- **`BookRented`**  
+- **`BookReturned`**  
 
 ---
+<table>
+  <tr>
+    <td style="width: 50%; vertical-align: top; padding-right: 20px;">
+      <h4>4. <code>Security Features</code></h4>
+      <ul>
+        <li><strong>Reentrancy Guard</strong>:<br>
+          Uses OpenZeppelin’s <code>ReentrancyGuard</code>. We used the following import to implement the reentrancy protection:
+          <pre><code>import "@openzeppelin/contracts/security/ReentrancyGuard.sol";</code></pre>
+        </li>
+        <li><strong>Input Validation</strong>:<br>
+          Checks for correct deposit amounts and item availability.
+        </li>
+        <li><strong>Book owners cannot rent their own listed items</strong>:<br>
+          This restriction is enforced at the smart contract level, preventing owners from initiating rental transactions for their own books or items.
+        </li>
+        <li><strong>Already rented items are blocked from further rentals</strong>:<br>
+          If the item is already rented out by someone else, then other users can't rent it. UI shows <code>"currently rented out"</code>.
+        </li>
+      </ul>
+    </td>
+    <td style="width: 50%; text-align: center;">
+      <img src="Rentitem-mybook.jpg" alt="Owner cannot rent their own book" style="max-width: 100%; margin-bottom: 15px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1);"/>
+      <img src="rentedout.png" alt="Item currently rented out UI" style="max-width: 100%; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1);"/>
+    </td>
+  </tr>
+</table>
 
-### Security Features
-- **Reentrancy Guard**: Uses OpenZeppelin’s `ReentrancyGuard`.  
-- **Access Control**: Only owners can list items (`onlyOwner` modifier).  
-- **Input Validation**: Checks for correct deposit amounts and item availability.  
 
 ---
-
-### Workflow Example
-1. **Owner lists a book**:  
-2. **Renter borrows for 3 days**:  
-3. **Returned on day 3**:  
-4. **Returned on day 8**: Auto-returned → full deposit forfeited.  
-## Testing Guide
-
+## Workflow Summary
+![image](Workflow.png)
+- When uploading, the frontend sends a request to the Railway-hosted backend to obtain a pre-signed URL.
+- It then uses the Pinata SDK to upload the file to IPFS, receiving back a CID.
+- The frontend generates a metadata JSON, uploads it using the same flow, and receives another CID representing the metadata.
+- Contract address and AIB's stored in `constant.js`.
+---
 This section explains how to test the core functionalities of your smart contract and platform to ensure all features work as intended.
-
----
 
 ### 1. Prerequisites
 - Smart contract deployed on Sepolia testnet (see [Setup Instructions](#setup-instructions))
@@ -305,27 +369,3 @@ This section explains how to test the core functionalities of your smart contrac
    - State variables (e.g., `isAvailable`, `deposit`) update correctly.
 
 ---
-
-### 4. Example Test Cases
-| Test Case                        | Steps                                                                 | Expected Result                       |
-|----------------------------------|-----------------------------------------------------------------------|---------------------------------------|
-| Only owner can list items         | Non-owner tries to call `listItem`                                    | Transaction fails                     |
-| Correct deposit validation         | Rent with incorrect deposit amount                                   | Transaction fails                     |
-| Double rental prevention           | Rent an already rented item                                          | Transaction fails                     |
-| Early return refund                | Return item before rental period ends                                | Unused penalty refunded               |
-| Late return penalty deduction      | Return item 2 days late (within `max_penalty_days`)                  | Penalty = `2 × max_penalty_fees`      |
-| Max penalty auto-return            | Return item after `max_penalty_days + 1`                             | Full deposit forfeited                |
-
----
-
-### 5. (Optional) Automated Testing
-If using Hardhat/Truffle:
-1. Run tests:
-2. Sample test checks:
-- Listing permissions
-- Deposit calculations
-- Refund logic for early/late returns
-
----
-
-**Tip**: Include screenshots of successful transactions and UI states in your documentation!  
