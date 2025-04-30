@@ -225,6 +225,7 @@ The smart contract enables a trustless book/item rental system where:
               <pre><code>uint256 refund = item.deposit - (daysRented * item.dailyPrice);</code></pre>
             </li>
             <li>Previews days remaining to the user who has rented the item.</li>
+            <li>If the user return's the item on the first day itself, then 1 day rent is deducted from the total deposit and rest is refunded to the user</code>.</li>
             <li>Owner cannot rent their own item; they are shown <code>your_book</code> on the UI.</li>
             <li>Deducts penalties for late returns up to <code>max_penalty_days</code>.</li>
             <li>Transfers refund to renter and remaining funds to owner.</li>
@@ -236,6 +237,21 @@ The smart contract enables a trustless book/item rental system where:
     <td style="width: 50%; text-align: center;">
       <img src="Returnitem.jpg" alt="Step 1 UI" style="max-width: 100%; margin-bottom: 15px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1);"/>
       <img src="Rentitem-mybook.jpg" alt="Step 2 UI" style="max-width: 100%; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1);"/>
+    </td>
+  </tr>
+</table>
+
+<table>
+  <tr>
+    <td style="width: 50%; vertical-align: top; padding-right: 20px;">
+      <h4>4.Error Handling</h4>
+      <ul>
+            <li> If in the course of using the app, there is an event of failed transaction due to any unexpected error, then user is notified with this kind of pop-up.</li>
+        </li>
+      </ul>
+    </td>
+    <td style="width: 50%; text-align: center;">
+      <img src="error.png" alt="List Item Flow" style="max-width: 100%; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1);"/>
     </td>
   </tr>
 </table>
@@ -284,11 +300,13 @@ If `max_penalty_days` are exceeded, then book is autoreturned. There is a backen
         <li><strong>Already rented items are blocked from further rentals</strong>:<br>
           If the item is already rented out by someone else, then other users can't rent it. UI shows <code>"currently rented out"</code>.
         </li>
+        </br>
+        <img src="RentedItem3.jpg" alt="Owner cannot rent their own book" style="max-width: 80%; margin-bottom: 10px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1);"/>
       </ul>
     </td>
     <td style="width: 50%; text-align: center;">
       <img src="Rentitem-mybook.jpg" alt="Owner cannot rent their own book" style="max-width: 100%; margin-bottom: 15px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1);"/>
-      <img src="rentedout.png" alt="Item currently rented out UI" style="max-width: 100%; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1);"/>
+      <img src="rentedout.jpg" alt="Item currently rented out UI" style="max-width: 100%; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1);"/>
     </td>
   </tr>
 </table>
@@ -303,8 +321,9 @@ If `max_penalty_days` are exceeded, then book is autoreturned. There is a backen
 - The frontend generates a metadata JSON, uploads it using the same flow, and receives another CID representing the metadata.
 - Contract address and AIB's stored in `constant.js`.
 ![image](offon.png)
+<br>
 It can be clearly infered from summary and the flowcharts presented that:
-- Only `CID` from the items listing is stored on-chain along with `daily_rent`'s.
+- Only `CID` from the items listing is stored on-chain along with `daily_rent`'s. So user's personal data isn't being saved on-chain.
 - Rest of the data is stored off-chain in Pinata. 
 ---
 This section explains how to test the core functionalities of your smart contract and platform to ensure all features work as intended.
