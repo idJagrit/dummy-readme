@@ -205,7 +205,7 @@ The smart contract enables a trustless book/item rental system where:
   </tr>
 </table>
 
-<table>
+<table style="width: 100%; table-layout: fixed;">
   <tr>
     <td style="width: 50%; vertical-align: top; padding-right: 20px;">
       <h4>3. <code>returnItem</code></h4>
@@ -225,7 +225,7 @@ The smart contract enables a trustless book/item rental system where:
               <pre><code>uint256 refund = item.deposit - (daysRented * item.dailyPrice);</code></pre>
             </li>
             <li>Previews days remaining to the user who has rented the item.</li>
-            <li>If the user return's the item on the first day itself, then 1 day rent is deducted from the total deposit and rest is refunded to the user</code>.</li>
+            <li>If the user returns the item on the first day itself, then 1 day rent is deducted from the total deposit and rest is refunded to the user.</li>
             <li>Owner cannot rent their own item; they are shown <code>your_book</code> on the UI.</li>
             <li>Deducts penalties for late returns up to <code>max_penalty_days</code>.</li>
             <li>Transfers refund to renter and remaining funds to owner.</li>
@@ -234,9 +234,9 @@ The smart contract enables a trustless book/item rental system where:
         </li>
       </ul>
     </td>
-    <td style="width: 50%; text-align: center;">
-      <img src="Returnitem.jpg" alt="Step 1 UI" style="max-width: 100%; margin-bottom: 15px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1);"/>
-      <img src="Rentitem-mybook.jpg" alt="Step 2 UI" style="max-width: 100%; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1);"/>
+    <td style="width: 50%; vertical-align: top; text-align: center;">
+      <img src="Returnitem.jpg" alt="Return item UI" style="width: 90%; margin-bottom: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1);" />
+      <img src="Rentitem-mybook.jpg" alt="Rent item UI" style="width: 90%; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1);" />
     </td>
   </tr>
 </table>
