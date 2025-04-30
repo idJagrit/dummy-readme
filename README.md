@@ -205,41 +205,43 @@ The smart contract enables a trustless book/item rental system where:
   </tr>
 </table>
 
-<table style="width: 100%; table-layout: fixed;">
-  <tr>
-    <td style="width: 50%; vertical-align: top; padding-right: 20px;">
-      <h4>3. <code>returnItem</code></h4>
-      <ul>
-        <li><strong>Purpose</strong>:<br>Renters return items to claim a refund.</li>
-        <li><strong>Parameters</strong>:
-          <ul>
-            <li><code>item</code>: ID of the item being returned.</li>
-          </ul>
-        </li>
-        <li><strong>Logic</strong>:
-          <ul>
-            <li>Calculates rental duration:
-              <pre><code>uint256 daysRented = (block.timestamp - rentalStartTime) / 86400;</code></pre>
-            </li>
-            <li>Computes refund:
-              <pre><code>uint256 refund = item.deposit - (daysRented * item.dailyPrice);</code></pre>
-            </li>
-            <li>Previews days remaining to the user who has rented the item.</li>
-            <li>If the user returns the item on the first day itself, then 1 day rent is deducted from the total deposit and rest is refunded to the user.</li>
-            <li>Owner cannot rent their own item; they are shown <code>your_book</code> on the UI.</li>
-            <li>Deducts penalties for late returns up to <code>max_penalty_days</code>.</li>
-            <li>Transfers refund to renter and remaining funds to owner.</li>
-            <li>Emits an <code>ItemReturned</code> event.</li>
-          </ul>
-        </li>
-      </ul>
-    </td>
-    <td style="width: 50%; vertical-align: top; text-align: center;">
-      <img src="Returnitem.jpg" alt="Return item UI" style="width: 90%; margin-bottom: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1);" />
-      <img src="Rentitem-mybook.jpg" alt="Rent item UI" style="width: 90%; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1);" />
-    </td>
-  </tr>
-</table>
+<div style="display: flex; align-items: flex-start; gap: 20px;">
+  <!-- Left Section (Text) -->
+  <div style="flex: 1;">
+    <h4>3. <code>returnItem</code></h4>
+    <ul>
+      <li><strong>Purpose</strong>:<br>Renters return items to claim a refund.</li>
+      <li><strong>Parameters</strong>:
+        <ul>
+          <li><code>item</code>: ID of the item being returned.</li>
+        </ul>
+      </li>
+      <li><strong>Logic</strong>:
+        <ul>
+          <li>Calculates rental duration:
+            <pre><code>uint256 daysRented = (block.timestamp - rentalStartTime) / 86400;</code></pre>
+          </li>
+          <li>Computes refund:
+            <pre><code>uint256 refund = item.deposit - (daysRented * item.dailyPrice);</code></pre>
+          </li>
+          <li>Previews days remaining to the user who has rented the item.</li>
+          <li>If the user returns the item on the first day itself, then 1 day rent is deducted from the total deposit and rest is refunded to the user.</li>
+          <li>Owner cannot rent their own item; they are shown <code>your_book</code> on the UI.</li>
+          <li>Deducts penalties for late returns up to <code>max_penalty_days</code>.</li>
+          <li>Transfers refund to renter and remaining funds to owner.</li>
+          <li>Emits an <code>ItemReturned</code> event.</li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Right Section (Images) -->
+  <div style="flex: 0 0 200px; text-align: center;">
+    <img src="Returnitem.jpg" alt="Return item UI" style="width: 100%; margin-bottom: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1);" />
+    <img src="Rentitem-mybook.jpg" alt="Rent item UI" style="width: 100%; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1);" />
+  </div>
+</div>
+
 
 <table>
   <tr>
