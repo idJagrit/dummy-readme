@@ -18,7 +18,7 @@ Team Members:
 - [Param Saxena(230001060)](https://github.com/SAXENA-PARAM)
 - [Saumya Vaidya(230008035)](https://github.com/samthedoctor)
 - [Jagrit(230051005)](https://github.com/idJagrit)
-- [Jai Pannu(230004019)]()
+- [Jai Pannu(230004019)](https://github.com/JaiPannu-IITI)
 - [Krishay Rathaure(230004026)](https://github.com/Quanmat)
 - [Rudra Jadon(230004043)](https://github.com/rudrajadon)
 
@@ -295,17 +295,22 @@ If `max_penalty_days` are exceeded, then book is autoreturned. There is a backen
 
 
 ---
-## Workflow Summary
+## Workflow Summary and Off-Chain and On Chain- Data Storage:
+
 ![image](Workflow.png)
 - When uploading, the frontend sends a request to the Railway-hosted backend to obtain a pre-signed URL.
 - It then uses the Pinata SDK to upload the file to IPFS, receiving back a CID.
 - The frontend generates a metadata JSON, uploads it using the same flow, and receives another CID representing the metadata.
 - Contract address and AIB's stored in `constant.js`.
+![image](offon.png)
+It can be clearly infered from summary and the flowcharts presented that:
+- Only `CID` from the items listing is stored on-chain along with `daily_rent`'s.
+- Rest of the data is stored off-chain in Pinata. 
 ---
 This section explains how to test the core functionalities of your smart contract and platform to ensure all features work as intended.
 
 ### 1. Prerequisites
-- Smart contract deployed on Sepolia testnet (see [Setup Instructions](#setup-instructions))
+- Smart contract deployed on Holesky testnet (see [Setup Instructions](#setup-instructions))
 - Test ETH in your MetaMask wallet (from Sepolia faucet)
 - Access to your frontend (locally or on Vercel)
 - *(Optional)* Remix IDE for manual contract interaction
@@ -352,20 +357,11 @@ This section explains how to test the core functionalities of your smart contrac
 
 ---
 
-### 3. Manual Testing via Remix
-1. Open [Remix IDE](https://remix.ethereum.org/) and connect to Sepolia.
-2. Load your deployed contract using its address and ABI.
-3. Test these functions with sample values:
-   - **`listItem`**:  
-     ```
-     listItem("Sample Book", 100000000000000000, 350000000000000000); // 0.1 ETH/day, 0.35 ETH deposit
-     ```
-   - **`rentItem`**:  
-     Send `0.35 ETH` with `rentItem(1, 3)` (itemId=1, 3 days).
-   - **`returnItem`**:  
-     Call `returnItem(1)` after varying rental periods.
-4. **Verify**:  
-   - Events are emitted (check Remix logs).  
-   - State variables (e.g., `isAvailable`, `deposit`) update correctly.
+### 3. Manual Testing via Foundry
+Following result window was obtained on testing the system of Foundry:
+<br>
+![image](test.jpg)
 
+You can visit this: [Foundry Documentation](https://book.getfoundry.sh/) to install the testing system.
 ---
+Note: Image Examples were taken from different user accounts, that's why there can be a contradiction in the images of different functions about some item, but in their own topic they are putted, keeping each significant to thier topic/feature.
