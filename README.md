@@ -300,13 +300,12 @@ If `max_penalty_days` are exceeded, then book is autoreturned. There is a backen
         <li><strong>Already rented items are blocked from further rentals</strong>:<br>
           If the item is already rented out by someone else, then other users can't rent it. UI shows <code>"currently rented out"</code>.
         </li>
-        </br>
-        <img src="RentedItem3.jpg" alt="Owner cannot rent their own book" style="max-width: 80%; margin-bottom: 10px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1);"/>
+        </br>  
       </ul>
     </td>
     <td style="width: 50%; text-align: center;">
       <img src="Rentitem-mybook.jpg" alt="Owner cannot rent their own book" style="max-width: 100%; margin-bottom: 15px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1);"/>
-      <img src="rentedout.jpg" alt="Item currently rented out UI" style="max-width: 100%; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1);"/>
+      <img src="RentedItem3.jpg" alt="Item currently rented out UI" style="max-width: 100%; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1);"/>
     </td>
   </tr>
 </table>
